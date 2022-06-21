@@ -1,29 +1,43 @@
 package study.day0616_p;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class lv3_이중우선순위큐 {
 
 	public static void main(String[] args) {
-		int[] numbers = { 4, 1, 2, 1 };
-		int target = 4;
-		System.out.println(solution(numbers, target));
+		String[] operations = { "I 16", "D 1" };
+		System.out.println(Arrays.toString(solution(operations)));
 	}
 
-	static int len = 0, res = 0;
+	public static int[] solution(String[] operations) {
+		List<Integer> list = new ArrayList<>();
 
-	public static int solution(int[] numbers, int target) {
-		len = numbers.length;
-		dfs(0, 0, numbers, target);
-		int answer = res;
-		return answer;
-	}
-
-	public static void dfs(int cnt, int val, int[] numbers, int target) {
-		if (cnt == len) {
-			if (val == target)
-				res++;
-			return;
+		for (String op : operations) {
+			int type = op.charAt(0);
+			int num = Integer.parseInt(op.substring(2));
+			if (type == 'I') {
+				list.add(num);
+				Collections.sort(list);
+			} else if (type == 'D') {
+				if (num == 1) {
+					if (list.size() != 0)
+						list.remove(list.size() - 1);
+				} else {
+					if (list.size() != 0)
+						list.remove(0);
+				}
+			}
 		}
-		dfs(cnt + 1, val + numbers[cnt], numbers, target);
-		dfs(cnt + 1, val - numbers[cnt], numbers, target);
+
+		int a = 0, b = 0;
+		if (list.size() != 0) {
+			a = list.get(list.size() - 1);
+			b = list.get(0);
+		}
+		int[] answer = { a, b };
+		return answer;
 	}
 }
